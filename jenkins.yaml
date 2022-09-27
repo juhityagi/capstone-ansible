@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  become: yes
+  become_user: root
+  tasks:
+  - name: Download Long Term Jenkins release
+    apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+  - name: ensure the repository is configured
+    apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+  - name: Install Java
+    apt: name="openjdk-11-jdk" state=present
+  - name: ensure jenkins is installed
+    apt: name=jenkins update_cache=yes
+  - name: ensure jenkins is running
+    service: name=jenkins state=started
